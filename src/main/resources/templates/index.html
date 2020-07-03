@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Calendar Sample</title>
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <style type="text/css">
+        .bs-component + .bs-component {
+            margin-top: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .bs-docs-section {
+                margin-top: 8em;
+            }
+
+            .bs-component {
+                position: relative;
+            }
+
+            .bs-docs-section .page-header h1 {
+                padding: .5rem 0;
+                margin-bottom: 2rem;
+                border-bottom: 1px solid #eee;
+            }
+
+            .bs-component .modal {
+                position: relative;
+                top: auto;
+                right: auto;
+                bottom: auto;
+                left: auto;
+                z-index: 1;
+                display: block;
+            }
+
+            .bs-component .modal-dialog {
+                width: 90%;
+            }
+
+            .bs-component .popover {
+                position: relative;
+                display: inline-block;
+                width: 220px;
+                margin: 20px;
+            }
+
+            .nav-tabs {
+                margin-bottom: 15px;
+            }
+
+            .progress {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/locale/ja.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script type="text/javascript" src="./js/tempusdominus-datetimepicker.js"></script>
+    <link rel="stylesheet" href="./css/tempusdominus-datetimepicker.css"/>
+</head>
+<body>
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="./">
+                Calendar Sample
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar"
+                    aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./">Top <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="container">
+    <section class="bs-docs-section">
+        <div class="row">
+            <div class="col-lg-12" th:if="${loggedIn}">
+                <div class="page-header">
+                    <h1 id="tables">Calendar</h1>
+                </div>
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Sun</th>
+                        <th scope="col">Mon</th>
+                        <th scope="col">Tue</th>
+                        <th scope="col">Wen</th>
+                        <th scope="col">Thu</th>
+                        <th scope="col">Fri</th>
+                        <th scope="col">Sat</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="currentWeek : ${currentMonth}">
+                        <td th:each="currentDay : ${currentWeek}" >
+                            <div th:text="${currentDay.date}">
+                            </div>
+                            <div th:each="plan : ${currentDay.planData}">
+                                <br>
+                                <div th:text="${plan.name}"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="bs-component">
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="page-header">
+                <h1 id="addPlan">Add</h1>
+            </div>
+            <form th:action="@{/add}" method="POST" th:object="${addForm}">
+                <fieldset>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h5>Date</h5>
+                            <div class="form-group">
+                                <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                                    <input type="text" class="form-control datetimepicker-input"
+                                           data-target="#datetimepicker2" required th:field="*{date}" />
+                                    <div class="input-group-append" data-target="#datetimepicker2"
+                                         data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#datetimepicker2').datetimepicker({});
+                            });
+                        </script>
+
+                        <div class="col-sm-6">
+                            <h5>Title</h5>
+                            <div class="form-group">
+                                <div class="input-group-text" id="title" data-target-input="nearest">
+                                    <input type="text" class="form-control" required th:field="*{name}" />
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">送信</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </section>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="./js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    $('.bs-component [data-toggle="popover"]').popover();
+    $('.bs-component [data-toggle="tooltip"]').tooltip();
+
+    $('#anti-yu-gothic-button').on('click', function () {
+        if ($('body').hasClass('no-thank-yu')) {
+            $('body').removeClass('no-thank-yu');
+            $(this).text('游ゴシックを無効にする').removeClass('btn-primary').addClass('btn-danger');
+            $("#anti-yu-gothic-message").html('現在デモページは游ゴシックの指定が<span class="text-primary">有効</span>になっています。');
+        } else {
+            $('body').addClass('no-thank-yu');
+            $(this).text('游ゴシックを有効にする').removeClass('btn-danger').addClass('btn-primary');
+            $("#anti-yu-gothic-message").html('現在デモページは游ゴシックの指定が<span class="text-danger">無効</span>になっています。');
+        }
+    });
+</script>
+
+</body>
+</html>
