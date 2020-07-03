@@ -84,16 +84,23 @@
                     <li class="nav-item">
                         <a class="nav-link" href="./">Top <span class="sr-only">(current)</span></a>
                     </li>
+                    <li class="nav-item" th:if="${!loggedIn}">
+                        <a class="nav-link" href="./signup">SignUp <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item" th:if="${!loggedIn}">
+                        <a class="nav-link" href="./login">Login <span class="sr-only">(current)</span></a>
+                    </li>
                 </ul>
             </div>
+        </div>
         </div>
     </nav>
 </header>
 
-<div class="container">
+<div class="container" th:if="${loggedIn}">
     <section class="bs-docs-section">
         <div class="row">
-            <div class="col-lg-12" th:if="${loggedIn}">
+            <div class="col-lg-12">
                 <div class="page-header">
                     <h1 id="tables">Calendar</h1>
                 </div>
@@ -112,7 +119,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="currentWeek : ${currentMonth}">
-                        <td th:each="currentDay : ${currentWeek}" >
+                        <td th:each="currentDay : ${currentWeek}">
                             <div th:text="${currentDay.date}">
                             </div>
                             <div th:each="plan : ${currentDay.planData}">
@@ -141,7 +148,7 @@
                             <div class="form-group">
                                 <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
                                     <input type="text" class="form-control datetimepicker-input"
-                                           data-target="#datetimepicker2" required th:field="*{date}" />
+                                           data-target="#datetimepicker2" required th:field="*{date}"/>
                                     <div class="input-group-append" data-target="#datetimepicker2"
                                          data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -159,7 +166,7 @@
                             <h5>Title</h5>
                             <div class="form-group">
                                 <div class="input-group-text" id="title" data-target-input="nearest">
-                                    <input type="text" class="form-control" required th:field="*{name}" />
+                                    <input type="text" class="form-control" required th:field="*{name}"/>
                                 </div>
                             </div>
                         </div>
