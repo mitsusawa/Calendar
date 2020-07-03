@@ -137,7 +137,7 @@ public class CalendarController {
 			String safeSignUpUsername = HtmlUtils.htmlEscape(signUpForm.getUsername());
 			String safeSignUpPassword = HtmlUtils.htmlEscape(signUpForm.getPassword());
 			Optional<UserData> searchedUserData = userDataRepository.findOneByName(safeSignUpUsername);
-			if (searchedUserData.isEmpty() && !result.hasErrors()) {
+			if (!searchedUserData.isPresent() && !result.hasErrors()) {
 				UserData userData = loginUserSession.getUserData();
 				if (Objects.isNull(userData)) {
 					userData = new UserData();
