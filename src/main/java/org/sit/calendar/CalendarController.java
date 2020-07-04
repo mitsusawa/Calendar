@@ -9,8 +9,10 @@ import org.sit.calendar.forms.LoginForm;
 import org.sit.calendar.forms.SignUpForm;
 import org.sit.calendar.session.LoginUserSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.HtmlUtils;
 
@@ -52,6 +55,7 @@ public class CalendarController {
 	private final LoginUserSession loginUserSession;
 	private final UserDataRepository userDataRepository;
 	private final PlanDataRepository planDataRepository;
+	private final HttpSession session;
 	
 	@RequestMapping(value = {"", "/index"})
 	@Transactional
@@ -214,6 +218,13 @@ public class CalendarController {
 		return "redirect:/index";
 	}
 	
+	@RequestMapping(value = {"/logout"})
+	public String logout(SessionStatus sessionStatus) {
+		sessionStatus.setComplete();
+		session.invalidate();
+		return "redirect:/index";
+	}
+	
 	@ModelAttribute("loginUserSession")
 	@Bean
 	public LoginUserSession startSession() {
@@ -239,10 +250,11 @@ public class CalendarController {
 	}
 	
 	@Autowired
-	public CalendarController(LoginUserSession loginUserSession, UserDataRepository userDataRepository, PlanDataRepository planDataRepository) {
+	public CalendarController(LoginUserSession loginUserSession, UserDataRepository userDataRepository, PlanDataRepository planDataRepository, HttpSession httpSession) {
 		this.userDataRepository = userDataRepository;
 		this.loginUserSession = loginUserSession;
 		this.planDataRepository = planDataRepository;
 		this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		this.session = httpSession;
 	}
 }
