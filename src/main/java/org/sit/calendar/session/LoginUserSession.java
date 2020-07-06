@@ -1,5 +1,6 @@
 package org.sit.calendar.session;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.sit.calendar.data.UserData;
@@ -15,8 +16,7 @@ import java.util.Objects;
 @SessionScope
 @Component
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-@Getter
-@Setter
+@Data
 public class LoginUserSession implements Serializable {
 	private UserData userData;
 	private boolean loggedIn;

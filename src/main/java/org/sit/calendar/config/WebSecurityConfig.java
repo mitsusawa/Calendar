@@ -13,7 +13,6 @@ import org.springframework.web.servlet.support.RequestDataValueProcessor;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		/*
 		http
 				.authorizeRequests()
 				.antMatchers("/", "/js/*", "/css/*", "/img/*", "/locales/*", "/*", "/admin/*").permitAll()
@@ -21,6 +20,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.antMatcher("/js/*").headers().frameOptions().sameOrigin();
 		http.antMatcher("/css/*").headers().frameOptions().sameOrigin();
-		 */
 	}
 }
