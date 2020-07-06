@@ -34,7 +34,7 @@ public class UserData implements Serializable {
 	@NotEmpty
 	private String name;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false, unique = false)
 	@NotEmpty
 	private String passwordHash;
 	
